@@ -35,12 +35,8 @@ if uploaded_file is not None:
     index1 = st.sidebar.number_input("Number of Scans", value=15, step=1)
     k = st.sidebar.slider("Number of SVD Components", 1, 20, 5)
 
-    # Slice wavelength range
-    rows_in_range = np.where((wavelengths >= min_wl) & (wavelengths <= max_wl))[0]
-    test_matrix_sliced = test_matrix[rows_in_range, :]
-
-    # Apply SVD
-    U, s, Vt = svd(test_matrix_sliced, full_matrices=False)
+    # Apply SVD on the full test_matrix (same as Jupyter)
+    U, s, Vt = svd(test_matrix, full_matrices=False)
 
     def reconstruct_svd(U, s, Vt, k):
         S_k = np.diag(s[:k])
@@ -50,10 +46,15 @@ if uploaded_file is not None:
 
     filtered_matrix = reconstruct_svd(U, s, Vt, k)
 
+    # Slice wavelength range AFTER reconstruction (same as Jupyter)
+    rows_in_range = np.where((wavelengths >= min_wl) & (wavelengths <= max_wl))[0]
+    test_matrix_sliced = test_matrix[rows_in_range, :]
+    filtered_matrix_sliced = filtered_matrix[rows_in_range, :]
+
     # Time slice
     index_end = index0 + index1
     slice_original = test_matrix_sliced[index0:index_end, :]
-    slice_filtered = filtered_matrix[index0:index_end, :]
+    slice_filtered = filtered_matrix_sliced[index0:index_end, :]
     residual = slice_original - slice_filtered
 
     # Plots
@@ -80,7 +81,7 @@ if uploaded_file is not None:
 
     # Download buttons
     st.subheader("Download Results")
-    st.download_button("Download Filtered Matrix", data=pd.DataFrame(filtered_matrix).to_csv(index=False, header=False), file_name="filtered_matrix.csv")
+    st.download_button("Download Filtered Matrix", data=pd.DataFrame(filtered_matrix_sliced).to_csv(index=False, header=False), file_name="filtered_matrix.csv")
     st.download_button("Download Residual", data=pd.DataFrame(residual).to_csv(index=False, header=False), file_name="residual.csv")
     st.download_button("Download U Matrix", data=pd.DataFrame(U).to_csv(index=False, header=False), file_name="U_matrix.csv")
     st.download_button("Download Singular Values", data=pd.DataFrame(s).to_csv(index=False, header=False), file_name="singular_values.csv")
