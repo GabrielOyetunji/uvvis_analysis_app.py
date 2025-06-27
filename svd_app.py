@@ -82,3 +82,6 @@ if uploaded_file is not None:
     st.subheader("Download Results")
     st.download_button("Download Filtered Matrix", data=pd.DataFrame(filtered_matrix).to_csv(index=False, header=False), file_name="filtered_matrix.csv")
     st.download_button("Download Residual", data=pd.DataFrame(residual).to_csv(index=False, header=False), file_name="residual.csv")
+    st.download_button("Download U Matrix", data=pd.DataFrame(U).to_csv(index=False, header=False), file_name="U_matrix.csv")
+    st.download_button("Download Singular Values", data=pd.DataFrame(s).to_csv(index=False, header=False), file_name="singular_values.csv")
+    st.download_button("Download Vt Matrix", data=pd.DataFrame(Vt).to_csv(index=False, header=False), file_name="Vt_matrix.csv")
