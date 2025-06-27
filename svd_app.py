@@ -80,5 +80,5 @@ if uploaded_file is not None:
 
     # Download buttons
     st.subheader("Download Results")
-    st.download_button("Download Filtered Matrix", data=pd.DataFrame(filtered_matrix).to_csv(index=False), file_name="filtered_matrix.csv")
-    st.download_button("Download Residual", data=pd.DataFrame(residual).to_csv(index=False), file_name="residual.csv")
+    st.download_button("Download Filtered Matrix", data=pd.DataFrame(filtered_matrix).to_csv(index=False, header=False), file_name="filtered_matrix.csv")
+    st.download_button("Download Residual", data=pd.DataFrame(residual).to_csv(index=False, header=False), file_name="residual.csv")
