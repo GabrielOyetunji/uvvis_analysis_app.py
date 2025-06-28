@@ -48,6 +48,18 @@ if uploaded_file is not None:
 
     filtered_matrix = reconstruct_svd(U, s, Vt, k)
 
+    # 📉 Scree Plot
+    st.subheader("Scree Plot (Singular Values)")
+    fig_scree, ax_scree = plt.subplots()
+    ax_scree.plot(range(1, len(s)+1), s, marker='o', linestyle='-')
+    ax_scree.axvline(k, color='r', linestyle='--', label=f'Selected k = {k}')
+    ax_scree.set_xlabel("Component Number")
+    ax_scree.set_ylabel("Singular Value")
+    ax_scree.set_title("Scree Plot")
+    ax_scree.grid(True)
+    ax_scree.legend()
+    st.pyplot(fig_scree)
+
     # Wavelength filtering
     rows_in_range = np.where((wavelengths >= min_wl) & (wavelengths <= max_wl))[0]
     wl_selected = wavelengths[rows_in_range]
